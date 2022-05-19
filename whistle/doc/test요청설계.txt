@@ -1,0 +1,94 @@
+# /test로 요청하는 요청에 대한 설계
+
+요청내용 : 주소표시줄, form 태그의 action 속성값, ajax()의 url
+파라미터 : 전달할 데이터 의미. 키값만 나열
+컨트롤러 : 요청 내용이 서버에 전달될 경우 실행할 클래스 경로 의미
+뷰 		 : 보여줄 jsp 파일 경로
+
+----------------
+# 로그인 폼 보기 요청
+요청내용 : /whistle/test/login.pink
+파라미터 : 무
+컨트롤러 : com.githrd.test.Login
+뷰 		 : /WEB-INF/views/test/member/login.jsp
+
+----------------
+# 로그인 처리 요청
+요청내용 : /whistle/test/loginProc.pink
+파라미터 : id, pw
+컨트롤러 : com.githrd.test.LoginProc
+뷰 		 : redirect
+				성공 : /whistle/
+				실패 : /whistle/test/login.pink
+
+----------------
+
+# 로그아웃 처리 요청
+요청내용 : /whistle/test/logout.pink
+파라미터 : 무
+컨트롤러 : com.githrd.test.Logout
+뷰 		 : redirect ] 
+				성공 : /whistle/test/login.pink
+				실패 : /whistle/
+
+------------------
+
+# 비동기통신 처리 요청
+요청내용 : /whistle/test/loginAjax.pink
+파라미터 : id, pw
+컨트롤러 : com.githrd.test.LoginAjax
+뷰 		 : redirect ] 
+				성공 : /whistle/
+				실패 : alert('로그인에 실패했습니다');
+
+======================
+
+index page 처리
+
+1. myInfo 버튼 클릭하면
+	비동기 통신으로 내 정보 조회해서
+	브라우저 하단에 내 정보 출력하도록 한다.
+	출력내용은 
+		회원번호, 회원이름, 아이디, 메일, 전화번호, 가입일, 성별, 아바타 이미지
+		
+	url : '/whistle/test/myinfo.pink'	
+	
+=====================
+# 아바타 버튼 리스트 폼보기 요청 
+요청내용 : /whistle/test/avtList.pink
+파라미터 : 무
+컨트롤러 : com.githrd.test.AvtList
+뷰 		 : /WEB-INF/views/test/avtList.jsp
+
+{
+	"ano": "11",
+	"savename": "img_avatar1.png",
+	"dir": "/img/avatar/",
+	"gen": "M"
+	
+}
+
+success: function(data) {
+	var data = {
+					"ano": "11",
+					"savename": "img_avatar1.png",
+					"dir": "/img/avatar/",
+					"gen": "M"
+					
+				};
+	data.ano
+	data.dir
+}
+======================
+# 아바타 정보 비동기 통신 요청 
+요청내용 : /whistle/test/avtInfo.pink
+파라미터 : ano
+컨트롤러 : com.githrd.test.AvtInfo
+뷰 		 : json
+
+
+<c:forEach var="data" begin="1" end="10">
+	<h1>${data}</h1>
+</c:forEach>
+
+위 태그를 ajax 함수에서 append 시켯을 경우

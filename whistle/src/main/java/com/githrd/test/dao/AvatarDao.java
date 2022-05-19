@@ -1,0 +1,64 @@
+package com.githrd.test.dao;
+
+import java.sql.*;
+import com.githrd.test.vo.*;
+import com.githrd.test.sql.*;
+import com.githrd.test.db.*;
+
+public class AvatarDao {
+	
+	private JennieJDBC db;
+	private Connection con;
+	private Statement stmt;
+	private PreparedStatement pstmt;
+	private ResultSet rs;
+	private MemberSQL mSQL;
+	
+	public AvatarDao() {
+		db = new JennieJDBC();
+		mSQL = new MemberSQL();
+		
+	}
+	
+	//아바타 번호로 아바타 정보 조회 전담 처리 함수
+	public AvatarVO getAnoINFO(int ano) {
+		//반환값 변수
+		AvatarVO aVO = new AvatarVO();
+		
+		//커넥션
+		con = db.getCon();
+		//SQL
+		String sql = mSQL.getSQL(mSQL.SEL_AVT_INFO);
+		//pstmt
+		pstmt = db.getPstmt(con, sql);
+		try {
+			//질의명령 완성
+			pstmt.setInt(1, ano);
+			//질의명령 보내고 결과 받고
+			rs = pstmt.executeQuery();
+			//데이터 꺼내고
+			rs.next();
+			String savename = rs.getString("savename");
+			int anum = rs.getInt("ano");
+			String dir = rs.getString("dir");
+			String gen = rs.getString("gen");
+			
+			//vo에 담기
+			aVO.setAno(anum);
+			aVO.setSavename(savename);
+			aVO.setDir(dir);
+			aVO.setGen(gen);
+			
+			
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			db.close(rs);
+			db.close(pstmt);
+			db.close(con);
+		}
+		
+		//데이터 반환
+		return aVO;
+	}
+}
